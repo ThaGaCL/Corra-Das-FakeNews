@@ -7,6 +7,10 @@ public class Casa {
         this.J = J;
     }
 
+    public void jogadorSai(){
+        this.J = null;
+    }
+
     public void restritoEntra(Restrito R){
         this.R = R;
     }

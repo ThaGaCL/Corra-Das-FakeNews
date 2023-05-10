@@ -55,6 +55,45 @@ public class Principal
         tabuleiro.inicializaFakes(fakes);
         tabuleiro.desenhaTabuleiro();
 
+        int jogadorAtual = 0;
+        int rodadas = 0;
+
+        while(rodadas < 20){
+            if(jogadorAtual > 3)
+                jogadorAtual = 0;
+            
+            System.out.println("Jogador atual: " + jogadores[jogadorAtual].nome);
+            System.out.println("Digite 1 para mover para cima, 2 para mover para esquerda, 3 para mover para baixo e 4 para mover para direita");
+            int opcao = scanner.nextInt();
+            int linhaAnterior = jogadores[jogadorAtual].linha;
+            int colunaAnterior = jogadores[jogadorAtual].coluna;
+
+
+            switch(opcao){
+                case 1:
+                    jogadores[jogadorAtual].moveCima();
+                    break;
+                case 2:
+                    jogadores[jogadorAtual].moveEsquerda();
+                    break;
+                case 3:
+                    jogadores[jogadorAtual].moveBaixo();
+                    break;
+                case 4:
+                    jogadores[jogadorAtual].moveDireita();
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+                    break; 
+
+            }
+
+            tabuleiro.atualizaJogador(jogadores[jogadorAtual], linhaAnterior, colunaAnterior);
+            tabuleiro.desenhaTabuleiro();
+            rodadas++;
+            jogadorAtual++;
+        }
+
         scanner.close();
 
     }

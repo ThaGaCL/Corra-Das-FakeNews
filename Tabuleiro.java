@@ -19,6 +19,12 @@ public class Tabuleiro {
 
     }
 
+    public void atualizaJogador(Jogador J, int linhaEx, int colunaEx){
+        this.casas[linhaEx][colunaEx].jogadorSai();
+        this.casas[J.linha][J.coluna].jogadorEntra(J);
+    }
+
+
     public void inicializaRestritos(Restrito[] restritos){
         for(int i = 0; i < 4; i++){
             this.casas[restritos[i].linha][restritos[i].coluna].restritoEntra(restritos[i]);
