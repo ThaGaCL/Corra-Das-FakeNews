@@ -42,17 +42,19 @@ public class Principal
             
         }
 
-        fakes[0].setNome("E1");
-        fakes[1].setNome("E2");
-        fakes[2].setNome("E3");
-        fakes[3].setNome("E1");
-        fakes[4].setNome("E2");
-        fakes[5].setNome("E3");
+        fakes[0].setNome("F1");
+        fakes[1].setNome("F2");
+        fakes[2].setNome("F3");
+        fakes[3].setNome("F1");
+        fakes[4].setNome("F2");
+        fakes[5].setNome("F3");
 
         Tabuleiro tabuleiro = new Tabuleiro();
         tabuleiro.inicializaJogadores(jogadores);
         tabuleiro.inicializaRestritos(restritos);
         tabuleiro.inicializaFakes(fakes);
+
+        System.out.print("\033[H\033[2J");   //Limpa a tela
         tabuleiro.desenhaTabuleiro();
 
         int jogadorAtual = 0;
@@ -67,20 +69,20 @@ public class Principal
             int opcao = scanner.nextInt();
             int linhaAnterior = jogadores[jogadorAtual].linha;
             int colunaAnterior = jogadores[jogadorAtual].coluna;
-
+            int funcionou = 0;
 
             switch(opcao){
                 case 1:
-                    jogadores[jogadorAtual].moveCima();
+                    funcionou = jogadores[jogadorAtual].moveCima();
                     break;
                 case 2:
-                    jogadores[jogadorAtual].moveEsquerda();
+                    funcionou = jogadores[jogadorAtual].moveEsquerda();
                     break;
                 case 3:
-                    jogadores[jogadorAtual].moveBaixo();
+                    funcionou = jogadores[jogadorAtual].moveBaixo();
                     break;
                 case 4:
-                    jogadores[jogadorAtual].moveDireita();
+                    funcionou = jogadores[jogadorAtual].moveDireita();
                     break;
                 default:
                     System.out.println("Opção inválida");
@@ -89,9 +91,12 @@ public class Principal
             }
 
             tabuleiro.atualizaJogador(jogadores[jogadorAtual], linhaAnterior, colunaAnterior);
+            System.out.print("\033[H\033[2J");   //Limpa a tela
             tabuleiro.desenhaTabuleiro();
             rodadas++;
-            jogadorAtual++;
+            
+            if(funcionou == 1)
+                jogadorAtual++;
         }
 
         scanner.close();

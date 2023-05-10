@@ -15,24 +15,36 @@ public class Jogador extends Peca {
 
     }
 
-    public void moveCima(){
-        if(this.linha > 0)
+    public int moveCima(){
+        if(this.linha > 0){
             this.linha--;
+            return 1;
+        }
+        return 0;
     }
 
-    public void moveEsquerda(){
-        if(this.coluna > 0)
+    public int moveEsquerda(){
+        if(this.coluna > 0){
             this.coluna--;
+            return 1;
+        }
+        return 0;
     }
 
-    public void moveBaixo(){
-        if(this.linha < 8)
+    public int moveBaixo(){
+        if(this.linha < 8){
             this.linha++;
+            return 1;
+        }
+        return 0;
     }
 
-    public void moveDireita(){
-        if(this.coluna < 8)
+    public int moveDireita(){
+        if(this.coluna < 8){
             this.coluna++;
+            return 1;
+        }
+        return 0;
     }
 
 }
