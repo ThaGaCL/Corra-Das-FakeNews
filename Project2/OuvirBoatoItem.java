@@ -1,7 +1,7 @@
 public class OuvirBoatoItem extends Item{
     
-    public OuvirBoatoItem(Posicao posicao){
-        super(posicao);
+    public OuvirBoatoItem(String nome, Posicao posicao){
+        super(nome, posicao);
     }
 
     public void usar(){

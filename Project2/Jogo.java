@@ -43,7 +43,7 @@ public class Jogo {
         for (int i = 0; i < numjogadores; i++) {
             Jogador jogador = new Jogador(posicoes[i], "J" + (i + 1));
             jogadoresList.add(jogador);
-            casa[posicoes[i].getY()][posicoes[i].getX()].setJogador(jogador);
+            casa[posicoes[i].getX()][posicoes[i].getY()].setJogador(jogador);
         }
     }
 
@@ -132,16 +132,16 @@ public class Jogo {
 
             switch (randTipo.getAleatorio()) {
                 case 0:
-                    itemList.add(new DenunciarFakeNewsItem(concatPos));
+                    itemList.add(new DenunciarFakeNewsItem("Denunciar Fake News", concatPos));
                     break;
                 case 1:
-                    itemList.add(new FugirItem(concatPos));
+                    itemList.add(new FugirItem("Fugir", concatPos));
                     break;
                 case 2:
-                    itemList.add(new LerNoticiaRealItem(concatPos));
+                    itemList.add(new LerNoticiaRealItem("Ler Notícia Real", concatPos));
                     break;
                 case 3:
-                    itemList.add(new OuvirBoatoItem(concatPos));
+                    itemList.add(new OuvirBoatoItem("Ouvir Boato", concatPos));
                     break;
                 default:
                     break;
@@ -162,17 +162,21 @@ public class Jogo {
     public void atualizaFakeNews(Tabuleiro tabuleiro, Setor[][] casa) {
         ArrayList<FakeNews> fakeNewsListAux = new ArrayList<FakeNews>();
         Iterator<FakeNews> iterator = fakeNewsList.iterator();
+        GeradorAleatorio rand = new GeradorAleatorio();
         
         while (iterator.hasNext()) {
             FakeNews fakeNews = iterator.next();
+
             Posicao antigaPosicao = fakeNews.getPosicao();
-            fakeNews.movimentar();
+            rand.setAleatorio(4);
+            fakeNews.movimentar(rand.getAleatorio());
             Posicao novaPosicao = fakeNews.getPosicao();
 
             // impede movimento sem deslocamento de casa
             while (antigaPosicao.getY() == novaPosicao.getY() && antigaPosicao.getX() == novaPosicao.getX()) {
                 antigaPosicao = fakeNews.getPosicao();
-                fakeNews.movimentar();
+                rand.setAleatorio(4);
+                fakeNews.movimentar(rand.getAleatorio());
                 novaPosicao = fakeNews.getPosicao();
             }
 
@@ -188,7 +192,7 @@ public class Jogo {
             }
 
             //Eliminação de fakenews por entrar em setor privado
-            else if (casa[novaPosicao.getX()][novaPosicao.getY()].getRestrito()) {
+            else if (casa[novaPosicao.getX()][novaPosicao.getY()].getRestrito() != false) {
                 eliminaFakeNews(casa, iterator, novaPosicao);
                 
                 System.out.println("A Fake News " + fakeNews.getNome() + " foi eliminada por entrar em setor privado!");
@@ -279,10 +283,88 @@ public class Jogo {
     
     public void atualizarJogadores(Tabuleiro tabuleiro, Setor[][] casa, InterfaceTerminal terminal){
         Iterator<Jogador> iterator = jogadoresList.iterator();
+        Scanner input = new Scanner(System.in);
         while (iterator.hasNext()) {
-            Scanner input = new Scanner(System.in);
+            int move;
             Jogador jogador = iterator.next();
 
+            System.out.print(Cores.ANSI_WHITE + "É a vez de: " + jogador.getNome() + "\n\n" + Cores.ANSI_RESET);
+            terminal.caixaSelecao();
+            move = input.nextInt();
+
+            if(move == 1){
+                Posicao posAntiga, posNova;
+                int direcao;
+
+                terminal.caixaMovimento();
+                direcao = input.nextInt();
+
+                posAntiga = jogador.getPosicao();
+                jogador.movimentar(direcao);
+                posNova = jogador.getPosicao();
+
+                while(casa[posNova.getX()][posNova.getY()].getJogador() != null) {
+                    System.out.println("Esta casa ja está ocupada por outro jogador, escolha outra!");
+                    terminal.caixaMovimento();
+                    direcao = input.nextInt();
+    
+                    posAntiga = jogador.getPosicao();
+                    jogador.movimentar(direcao);
+                    posNova = jogador.getPosicao();
+                }
+
+
+                System.out.print("\n\n");
+                System.out.println(jogador.getNome() + ": " + "(" + posAntiga.getX() + ", " + posAntiga.getY() + ")" + " ---> " + "(" + posNova.getX() + ", " + posNova.getY() + ")");
+
+                if((posNova.getX() > TAB_BORDA_MAX || posNova.getX() < TAB_BORDA_MIN) || (posNova.getY() > TAB_BORDA_MAX || posNova.getY() < TAB_BORDA_MIN)){
+                    casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
+                    iterator.remove();
+
+                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por se desviar de sua jornada!");
+                }
+                else if (casa[posNova.getX()][posNova.getY()].getRestrito() != false){
+                    casa[posNova.getX()][posNova.getY()].setJogador(null);
+                    iterator.remove();
+
+                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por andar em setor privado!");
+                }
+                else if (casa[posNova.getX()][posNova.getY()].getFakeNews() != null) {
+                    casa[posNova.getX()][posNova.getY()].setJogador(null);
+                    iterator.remove();
+
+                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por confiar em FakeNews!");
+                }
+                else if (casa[posNova.getX()][posNova.getY()].getItem() != null) {
+                    Item itemNome = casa[posNova.getX()][posNova.getY()].getItem();
+                    casa[posNova.getX()][posNova.getY()].setItem(null);
+                    itemList.remove(itemNome);
+
+                    casa[posNova.getX()][posNova.getY()].setJogador(jogador);
+
+                    jogador.adicionarItem(itemNome);
+                    if(itemNome.getNome().equals("Ouvir Boato"))
+                        System.out.println("Oh não! O jogador ouviu um boato, seu próximo movimento será aleatório!");
+                    else
+                        System.out.println("O jogador recebeu o direito de " + itemNome.getNome());
+
+                    
+
+                }
+                else{
+                    casa[posNova.getX()][posNova.getY()].setJogador(jogador);
+                }
+                casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
+
+            }
+            else{
+                int acao;
+                terminal.caixaAcao();
+                acao = input.nextInt();
+            }
+
+            tabuleiro.desenhaTabuleiro(casa);
         }
+        input.close();
     }
 }

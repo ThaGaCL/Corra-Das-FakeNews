@@ -28,7 +28,7 @@ public class FakeNews implements Movimento{
     }
 
     //Outros métodos
-    public void movimentar(){
+    public void movimentar(int movimento){
         GeradorAleatorio rand = new GeradorAleatorio();
         if(getNome().equals("F1")){
             rand.setAleatorio(4);

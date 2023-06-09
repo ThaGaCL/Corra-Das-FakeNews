@@ -1,7 +1,7 @@
 public class FugirItem extends Item{
     
-    public FugirItem(Posicao posicao){
-        super(posicao);
+    public FugirItem(String nome, Posicao posicao){
+        super(nome, posicao);
     }
 
     public void usar(){

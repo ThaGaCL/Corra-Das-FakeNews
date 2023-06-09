@@ -48,7 +48,49 @@ public class InterfaceTerminal {
             this.menuInicializacao(); 
     }
 
-    public void informaMovimentacao(){
-        
+    public void caixaSelecao(){
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "1    Mover         👣" + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "2    Ação          ⁉️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+    }
+
+    public void caixaMovimento(){
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "1    Cima          ⬆️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "2    Baixo         ⬇️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "3    Direita       ➡️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Esquerda      ⬅️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+    }
+
+    public void caixaAcao(){
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "1    Denunciar FakeNews          ⚠️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "2    Fugir                       💨" + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "3    Ler Notícia Real            📰" + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Ouvir Boato                 👂" + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
     }
 }

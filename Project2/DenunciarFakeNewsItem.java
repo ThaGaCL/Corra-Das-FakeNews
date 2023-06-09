@@ -1,7 +1,7 @@
 public class DenunciarFakeNewsItem extends Item{
 
-    public DenunciarFakeNewsItem(Posicao posicao){
-        super(posicao);
+    public DenunciarFakeNewsItem(String nome, Posicao posicao){
+        super(nome, posicao);
     }
 
     public void usar(){

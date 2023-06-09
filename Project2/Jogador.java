@@ -56,7 +56,40 @@ public class Jogador implements Movimento{
         itens.remove(item);
     }
 
-    public void movimentar(){
-        
+    public void movimentar(int movimento){
+        switch(movimento){
+            case 1:
+                movimentarNorte();
+                break;
+            case 2:
+                movimentarSul();
+                break;
+            case 3:
+                movimentarLeste();
+                break;
+            case 4:
+                movimentarOeste();
+                break;
+        }
+    }
+
+    public void movimentarNorte() {
+        Posicao novaPosicao = new Posicao(getPosicao().getX(), getPosicao().getY() - 1);
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarSul(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX(), getPosicao().getY() + 1);
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarLeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() + 1, getPosicao().getY());
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarOeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY());
+        setPosicao(novaPosicao);
     }
 }
