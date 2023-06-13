@@ -1,50 +1,95 @@
-public class Jogador extends Peca {
-    public String nome;
+import java.util.*;
 
-    public Jogador(int linha, int coluna, String nome){
-        this.linha = linha;
-        this.coluna = coluna;
+public class Jogador implements Movimento{
+
+    //Atributos
+    private String nome;
+    private Posicao posicao;
+    private List<Item> itens;
+
+    //Construtor
+    public Jogador(Posicao pos, String nome){
+        this.setNome(nome);
+        this.setPosicao(pos);
+        this.setItens(new ArrayList<Item>());
+    }
+
+    //Métodos get/set
+    public Posicao getPosicao(){
+        return this.posicao;
+    }
+
+    public Collection<Item> getItens(){
+        return this.itens;
+    }
+
+    public String getNome(){
+        return this.nome;
+    }
+
+    public void setPosicao(Posicao pos){
+        this.posicao = pos;
+    }
+
+    public void setItens(List<Item> itens){
+        this.itens = itens;
+    }
+
+    public void setNome(String nome){
         this.nome = nome;
     }
 
-    public void inicializaJogadores(Jogador[] jogadores){
-        jogadores[0] = new Jogador(0, 4, "J1");
-        jogadores[1] = new Jogador(4, 8, "J2");
-        jogadores[2] = new Jogador(8, 4, "J3");
-        jogadores[3] = new Jogador(4, 0, "J4"); 
-
+    //Outros métodos
+    public void adicionarItem(Item item){
+        itens.add(item);
     }
 
-    public int moveCima(){
-        if(this.linha > 0){
-            this.linha--;
-            return 1;
+    public int quantItem(int indice){
+        return itens.size();
+    }
+
+    public Item buscarItem(int indice){
+        return itens.get(indice);
+    }
+
+    public void removerItem(Item item){
+        itens.remove(item);
+    }
+
+    public void movimentar(int movimento){
+        switch(movimento){
+            case 1:
+                movimentarNorte();
+                break;
+            case 2:
+                movimentarSul();
+                break;
+            case 3:
+                movimentarLeste();
+                break;
+            case 4:
+                movimentarOeste();
+                break;
         }
-        return 0;
     }
 
-    public int moveEsquerda(){
-        if(this.coluna > 0){
-            this.coluna--;
-            return 1;
-        }
-        return 0;
+    public void movimentarNorte() {
+        Posicao novaPosicao = new Posicao(getPosicao().getX(), getPosicao().getY() - 1);
+        setPosicao(novaPosicao);
     }
 
-    public int moveBaixo(){
-        if(this.linha < 8){
-            this.linha++;
-            return 1;
-        }
-        return 0;
+    public void movimentarSul(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX(), getPosicao().getY() + 1);
+        setPosicao(novaPosicao);
     }
 
-    public int moveDireita(){
-        if(this.coluna < 8){
-            this.coluna++;
-            return 1;
-        }
-        return 0;
+    public void movimentarLeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() + 1, getPosicao().getY());
+        setPosicao(novaPosicao);
     }
 
+    public void movimentarOeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY());
+        setPosicao(novaPosicao);
+    }
 }
