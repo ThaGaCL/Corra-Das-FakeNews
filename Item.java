@@ -1,3 +1,5 @@
+import java.util.*;
+
 public abstract class Item {
     
     private int tipo;
@@ -35,6 +37,6 @@ public abstract class Item {
         this.tipo = tipo;
     }
 
-    public abstract void usar();
+    public abstract void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos);
 
 }

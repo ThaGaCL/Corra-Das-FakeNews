@@ -88,6 +88,9 @@ public class InterfaceTerminal {
         System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
         System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "3    Ler Notícia Real         📰 " + quantLerReal + "x" + Cores.ANSI_CYAN + "|\n");
         System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Voltar                   ⬅️    " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
     }
-    //aaaa
 }

@@ -6,7 +6,7 @@ public class OuvirBoatoItem extends Item{
         super(tipo, nome, posicao);
     }
 
-    public void usar(){
-        
+    public void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos){
+                
     }
 }

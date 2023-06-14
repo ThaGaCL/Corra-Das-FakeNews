@@ -92,4 +92,6 @@ public class Jogador implements Movimento{
         Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY());
         setPosicao(novaPosicao);
     }
+
+    
 }

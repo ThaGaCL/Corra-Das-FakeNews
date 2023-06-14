@@ -7,13 +7,8 @@ public class LerNoticiaRealItem extends Item{
     }
 
     @Override
-    public void usar(){
-        System.out.println("Você usou o item 'Ler Notícia Real'!");
-    }
+    public void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos){
 
-    public void usar(Setor casa[][], Posicao posicao, ArrayList<FakeNews> fakeNewsList, FakeNews fakenews){
-        casa[posicao.getX()][posicao.getY()].setFakeNews(null);
-        fakeNewsList.remove(fakenews);
     }
 
 }

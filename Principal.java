@@ -14,12 +14,13 @@ public class Principal {
         jogo.inicializaFakeNews(casa);
         jogo.inicializaSetor(casa);
         jogo.inicializaItem(casa);
+        jogo.limpaTerminal();
         tabuleiro.desenhaTabuleiro(casa);
-        jogo.atualizarJogadores(tabuleiro, casa, terminal);
+        jogo.atualizarJogadores(tabuleiro, casa, terminal, true);
         System.out.println(Cores.ANSI_WHITE + "+----+----+----+----+----+----+----+----+----+" + Cores.ANSI_RESET);
-        jogo.atualizarJogadores(tabuleiro, casa, terminal);
+        jogo.atualizarJogadores(tabuleiro, casa, terminal, true);
         System.out.println(Cores.ANSI_WHITE + "+----+----+----+----+----+----+----+----+----+" + Cores.ANSI_RESET);
-        jogo.atualizarJogadores(tabuleiro, casa, terminal);
+        jogo.atualizarJogadores(tabuleiro, casa, terminal, true);
         jogo.encerrarLeitura();
         System.out.println(Cores.ANSI_WHITE + "+----+----+----+----+----+----+----+----+----+" + Cores.ANSI_RESET);
         jogo.atualizaFakeNews(tabuleiro, casa);

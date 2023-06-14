@@ -56,4 +56,5 @@ public class Setor {
     public void setFakeNews(FakeNews fakenews){
         this.fakenews = fakenews;
     }
+    
 }

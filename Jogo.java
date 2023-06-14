@@ -11,9 +11,9 @@ public class Jogo {
     private final int DELAY = 000;
     
     // Atributos
-    private List<Jogador> jogadoresList;
-    private List<FakeNews> fakeNewsList;
-    private List<Item> itemList;
+    private ArrayList<Jogador> jogadoresList;
+    private ArrayList<FakeNews> fakeNewsList;
+    private ArrayList<Item> itemList;
     private Posicao[] posicoes;
     Scanner input;
     
@@ -116,7 +116,7 @@ public class Jogo {
         for (int i = 0; i < NUM_INIT_ITEM; i++) {
             randPosX.setAleatorio(TAM_TAB);
             randPosY.setAleatorio(TAM_TAB);
-            randTipo.setAleatorio(1);
+            randTipo.setAleatorio(2);
 
             int linha = randPosX.getAleatorio();
             int coluna = randPosY.getAleatorio();
@@ -132,7 +132,7 @@ public class Jogo {
                 concatPos = new Posicao(linha, coluna);
             }
 
-            switch (randTipo.getAleatorio()) {
+            switch (1) {
                 case 0:
                     itemList.add(new DenunciarFakeNewsItem(1, "Denunciar FakeNews",concatPos));
                     break;
@@ -263,14 +263,17 @@ public class Jogo {
                 e.printStackTrace();
             }
             
+            limpaTerminal();
             tabuleiro.desenhaTabuleiro(casa);
         }
+
         fakeNewsList.addAll(fakeNewsListAux);
         for (FakeNews fakeNews : new ArrayList<>(fakeNewsList)) {
             if (fakeNewsList.contains(fakeNews)) {
                 System.out.println(fakeNews.getNome() + " (" + fakeNews.getPosicao().getX() + "," + fakeNews.getPosicao().getY() + ")");
             }
         }
+
     }
 
     public void eliminaFakeNews(Setor casa[][], Iterator<FakeNews> iterator, Posicao posicao){
@@ -283,40 +286,42 @@ public class Jogo {
         jogadoresList.remove(jogadorNome);
     }
     
-    public void atualizarJogadores(Tabuleiro tabuleiro, Setor[][] casa, InterfaceTerminal terminal){
+    public void atualizarJogadores(Tabuleiro tabuleiro, Setor[][] casa, InterfaceTerminal terminal, boolean proxJogador){
         Iterator<Jogador> iterator = jogadoresList.iterator();
         while (iterator.hasNext()) {
             int move;
-            Jogador jogador = iterator.next();
+            Jogador jogador;
+            jogador = iterator.next();
 
+            
             System.out.print(Cores.ANSI_WHITE + "É a vez de: " + jogador.getNome() + "\n\n" + Cores.ANSI_RESET);
             terminal.caixaSelecao();
             move = input.nextInt();
-
+            
             if(move == 1){
                 Posicao posAntiga, posNova;
                 int direcao;
-
+                
                 terminal.caixaMovimento();
                 direcao = input.nextInt();
 
                 posAntiga = jogador.getPosicao();
                 jogador.movimentar(direcao);
                 posNova = jogador.getPosicao(); 
-
+                
                 System.out.print("\n\n");
                 System.out.println(jogador.getNome() + ": " + "(" + posAntiga.getX() + ", " + posAntiga.getY() + ")" + " ---> " + "(" + posNova.getX() + ", " + posNova.getY() + ")");
-
+                
                 if((posNova.getX() > TAB_BORDA_MAX || posNova.getX() < TAB_BORDA_MIN) || (posNova.getY() > TAB_BORDA_MAX || posNova.getY() < TAB_BORDA_MIN)){
                     casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
                     iterator.remove();
-
+                    
                     System.out.println("O jogador " + jogador.getNome() + " foi eliminado por se desviar de sua jornada!");
                 }
                 else if (casa[posNova.getX()][posNova.getY()].getRestrito() != false){
                     casa[posNova.getX()][posNova.getY()].setJogador(null);
                     iterator.remove();
-
+                    
                     System.out.println("O jogador " + jogador.getNome() + " foi eliminado por andar em setor privado!");
                 }
                 else if (casa[posNova.getX()][posNova.getY()].getFakeNews() != null) {
@@ -329,28 +334,30 @@ public class Jogo {
                     Item itemNome = casa[posNova.getX()][posNova.getY()].getItem();
                     casa[posNova.getX()][posNova.getY()].setItem(null);
                     itemList.remove(itemNome);
-
+                    
                     casa[posNova.getX()][posNova.getY()].setJogador(jogador);
-
+                    
                     jogador.adicionarItem(itemNome);
                     if(itemNome.getTipo() == 4)
-                        System.out.println("Oh não! O jogador ouviu um boato, seu próximo movimento será aleatório!");
+                    System.out.println("Oh não! O jogador ouviu um boato, seu próximo movimento será aleatório!");
                     else
-                        System.out.println("O jogador recebeu o direito de " + itemNome.getNome());
-
+                    System.out.println("O jogador recebeu o direito de " + itemNome.getNome());
+                    
                 }
                 else{
                     casa[posNova.getX()][posNova.getY()].setJogador(jogador);
                 }
                 casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
-
+                
             }
             else if(move == 2){
-
+                
                 int acao;
                 int quantDenun = 0;
                 int quantFugir = 0;
                 int quantLerReal = 0;
+                int usou = 0;
+
 
                 for(Item item : jogador.getItens()){
                     if(item.getTipo() == 1){
@@ -366,16 +373,64 @@ public class Jogo {
                         
                     }
                 }
-
                 terminal.caixaAcao(quantDenun, quantFugir, quantLerReal);
 
                 acao = input.nextInt();
-                
+
+                switch(acao){
+                    case 1:
+                        for (Item item : jogador.getItens()) {
+                            if (item instanceof DenunciarFakeNewsItem) {
+                                DenunciarFakeNewsItem dFN = (DenunciarFakeNewsItem) item;
+                                dFN.usar(casa, fakeNewsList, jogador, jogador.getPosicao());
+                                usou = 1;
+                            }
+                        } 
+                        if(usou == 0){
+                            System.out.println("Você não possui nenhum item desse tipo");
+                            atualizarJogadores(tabuleiro, casa, terminal, false);
+                        }
+                        break;
+                    case 2:
+                        for (Item item : jogador.getItens()) {
+                            if (item instanceof FugirItem) {
+                                FugirItem F = (FugirItem) item;
+                                F.usar(casa, fakeNewsList, jogador, jogador.getPosicao());
+                                usou = 1;
+                            }
+                        } 
+                        if(usou == 0){
+                            System.out.println("Você não possui nenhum item desse tipo");
+                            atualizarJogadores(tabuleiro, casa, terminal, false);
+                        }
+                        break;
+                    case 3:
+                        for (Item item : jogador.getItens()) {
+                            if (item instanceof LerNoticiaRealItem) {
+                                LerNoticiaRealItem lNR = (LerNoticiaRealItem) item;
+                                lNR.usar(casa, fakeNewsList, jogador, jogador.getPosicao());
+                                usou = 1;
+                            }
+                        } 
+                        if(usou == 0){
+                            System.out.println("Você não possui nenhum item desse tipo");
+                            atualizarJogadores(tabuleiro, casa, terminal, false);
+                        }
+                        break;
+                    case 4:
+                        atualizarJogadores(tabuleiro, casa, terminal, false);
+                        break;
+                }
                 
             }
-
+            limpaTerminal();
             tabuleiro.desenhaTabuleiro(casa);
         }
+    }
+    
+    
+    public void limpaTerminal() {
+        System.out.print("\033[H\033[2J");
     }
     
     public void encerrarLeitura(){
