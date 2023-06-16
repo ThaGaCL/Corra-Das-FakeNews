@@ -48,11 +48,13 @@ public class InterfaceTerminal {
             this.menuInicializacao(); 
     }
 
-    public void caixaSelecao(){
+    public void caixaSelecaoMove(){
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
         System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "1    Mover         👣" + Cores.ANSI_CYAN + "|\n");
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+    }
 
+    public void caixaSelecaoAcao(){
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
         System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "2    Ação          ⁉️ " + Cores.ANSI_CYAN + "|\n");
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
@@ -74,6 +76,10 @@ public class InterfaceTerminal {
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
         System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Esquerda      ⬅️ " + Cores.ANSI_CYAN + "|\n");
         System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "5    Voltar        ↩️ " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "+---------------------+\n" + Cores.ANSI_RESET);
     }
 
     public void caixaAcao(int quantDenun, int quantFugir, int quantLerReal){
@@ -90,7 +96,45 @@ public class InterfaceTerminal {
         System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
 
         System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
-        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Voltar                   ⬅️    " + Cores.ANSI_CYAN + "|\n");
+        System.out.print(Cores.ANSI_CYAN + "|" + Cores.ANSI_WHITE + "4    Voltar                   ↩️    " + Cores.ANSI_CYAN + "|\n");
         System.out.print(Cores.ANSI_CYAN + "+-----------------------------------+\n" + Cores.ANSI_RESET);
+    }
+
+    public void vitoria(String msg) {
+        System.out.println(Cores.ANSI_CYAN + "       _      _                   " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "      (_)    | |                  " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "__   ___  ___| |_ ___  _ __ _   _ " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "\\ \\ / / |/ __| __/ _ \\| '__| | | |" + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + " \\ V /| | (__| || (_) | |  | |_| |" + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "  \\_/ |_|\\___|\\__\\___/|_|   \\__, |" + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "                             __/ |" + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "                            |___/ " + Cores.ANSI_RESET);
+
+        System.out.println("\n" + Cores.ANSI_CYAN + msg + Cores.ANSI_RESET);
+    }
+    
+
+    public void derrota(String msg){
+        System.out.println(Cores.ANSI_CYAN + "  _____          __  __ ______    ______      ________ _____  " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + " / ____|   /\\   |  \\/  |  ____|  / __ \\ \\    / /  ____|  __ \\ " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "| |  __   /  \\  | \\  / | |__    | |  | \\ \\  / /| |__  | |__) |" + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "| | |_ | / /\\ \\ | |\\/| |  __|   | |  | |\\ \\/ / |  __| |  _  / " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + "| |__| |/ ____ \\| |  | | |____  | |__| | \\  /  | |____| | \\ \\ " + Cores.ANSI_RESET);
+        System.out.println(Cores.ANSI_CYAN + " \\_____/_/    \\_\\_|  |_|______|  \\____/   \\/   |______|_|  \\_\\" + Cores.ANSI_RESET);
+
+        System.out.println("\n" + Cores.ANSI_CYAN + msg + Cores.ANSI_RESET);
+    }
+
+    public void turnoDaVez(int turno){
+            if (turno >= 1 && turno <= 8)
+                System.out.print(Cores.ANSI_WHITE + "\n\n Turno: " + Cores.ANSI_GREEN + turno + Cores.ANSI_WHITE + " / " + "20" + Cores.ANSI_RESET);
+            else if (turno > 8 && turno < 15)
+                System.out.print(Cores.ANSI_WHITE + "\n\n Turno: " + Cores.ANSI_YELLOW + turno + Cores.ANSI_WHITE + " / " + "20" + Cores.ANSI_RESET);
+            else
+                System.out.print(Cores.ANSI_WHITE + "\n\n Turno: " + Cores.ANSI_RED + turno + Cores.ANSI_WHITE + " / " + "20" + Cores.ANSI_RESET);
+    }
+
+    public void limpaTerminal() {
+        System.out.print("\033[H\033[2J");
     }
 }

@@ -5,13 +5,13 @@ public class Jogador implements Movimento{
     //Atributos
     private String nome;
     private Posicao posicao;
-    private List<Item> itens;
+    private LinkedList<Item> itens;
 
     //Construtor
     public Jogador(Posicao pos, String nome){
         this.setNome(nome);
         this.setPosicao(pos);
-        this.setItens(new ArrayList<Item>());
+        this.setItens(new LinkedList<Item>());
     }
 
     //Métodos get/set
@@ -19,7 +19,7 @@ public class Jogador implements Movimento{
         return this.posicao;
     }
 
-    public Collection<Item> getItens(){
+    public LinkedList<Item> getItens(){
         return this.itens;
     }
 
@@ -31,7 +31,7 @@ public class Jogador implements Movimento{
         this.posicao = pos;
     }
 
-    public void setItens(List<Item> itens){
+    public void setItens(LinkedList<Item> itens){
         this.itens = itens;
     }
 
@@ -41,7 +41,7 @@ public class Jogador implements Movimento{
 
     //Outros métodos
     public void adicionarItem(Item item){
-        itens.add(item);
+        itens.addFirst(item);
     }
 
     public int quantItem(int indice){
@@ -70,10 +70,22 @@ public class Jogador implements Movimento{
             case 4:
                 movimentarOeste();
                 break;
+            case 5:
+                movimentarNoroeste();
+                break;
+            case 6:
+                movimentarNordeste();
+                break;
+            case 7:
+                movimentarSudoeste();
+                break;
+            case 8:
+                movimentarSudeste();
+                break;
         }
     }
 
-    public void movimentarNorte() {
+    public void movimentarNorte(){
         Posicao novaPosicao = new Posicao(getPosicao().getX(), getPosicao().getY() - 1);
         setPosicao(novaPosicao);
     }
@@ -90,6 +102,26 @@ public class Jogador implements Movimento{
 
     public void movimentarOeste(){
         Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY());
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarNoroeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY() - 1);
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarNordeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() + 1, getPosicao().getY() - 1);
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarSudoeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() - 1, getPosicao().getY() + 1);
+        setPosicao(novaPosicao);
+    }
+
+    public void movimentarSudeste(){
+        Posicao novaPosicao = new Posicao(getPosicao().getX() + 1, getPosicao().getY() + 1);
         setPosicao(novaPosicao);
     }
 

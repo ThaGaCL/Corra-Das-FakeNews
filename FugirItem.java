@@ -9,26 +9,28 @@ public class FugirItem extends Item{
         super(tipo, nome, posicao);
     }
 
-    public void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos){
-        Scanner input = new Scanner(System.in);
+    @Override
+    public void usar(Setor casa[][], LinkedList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos, Scanner scan){
         int xNovo, yNovo;
-        int x = jogador.getPosicao().getX();
-        int y = jogador.getPosicao().getY();
+        int x = pos.getX();
+        int y = pos.getY();
         
         System.out.println("Para qual casa você deseja Fugir?");
         System.out.print("X: ");
-        xNovo = input.nextInt();
-        System.out.print("Y: ");
-        yNovo = input.nextInt();
-        Posicao posNova = new Posicao(xNovo, yNovo);
+        xNovo = scan.nextInt();
 
+        System.out.print("Y: ");
+        yNovo = scan.nextInt();
+
+        Posicao posNova = new Posicao(xNovo, yNovo);
         if(!verificaCasa(casa, posNova)){
-            casa[x][y].setJogador(null);
             casa[xNovo][yNovo].setJogador(jogador);
+            jogador.setPosicao(posNova);
+            casa[x][y].setJogador(null);
         }
         else{
             System.out.println("Esta casa já esta ocupada!");
-            this.usar(casa, FakeNewsList, jogador, pos);
+            this.usar(casa, FakeNewsList, jogador, pos, scan);
         }
     }
 
@@ -37,7 +39,7 @@ public class FugirItem extends Item{
         || concatPos.getY() < TAB_BORDA_MIN || concatPos.getY() > TAB_BORDA_MAX
         || (casa[concatPos.getX()][concatPos.getY()].getFakeNews() != null)
         || (casa[concatPos.getX()][concatPos.getY()].getJogador() != null)
-        || (casa[concatPos.getX()][concatPos.getY()].getRestrito() != false)
+        || (casa[concatPos.getX()][concatPos.getY()].isRestrito() != false)
         || (casa[concatPos.getX()][concatPos.getY()].getItem() != null));
     }
     

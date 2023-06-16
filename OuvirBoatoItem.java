@@ -6,7 +6,10 @@ public class OuvirBoatoItem extends Item{
         super(tipo, nome, posicao);
     }
 
-    public void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos){
-                
+    public void usar(Setor casa[][], LinkedList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos, Scanner scan){
+        GeradorAleatorio rand = new GeradorAleatorio();
+
+        rand.setAleatorio(8);
+        jogador.movimentar(1 + rand.getAleatorio());
     }
 }

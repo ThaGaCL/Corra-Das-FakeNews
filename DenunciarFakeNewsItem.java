@@ -7,7 +7,7 @@ public class DenunciarFakeNewsItem extends Item{
     }
 
     @Override
-    public void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos) {
+    public void usar(Setor casa[][], LinkedList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos, Scanner scan) {
         int x = jogador.getPosicao().getX();
         int y = jogador.getPosicao().getY();
         FakeNews fnAux;

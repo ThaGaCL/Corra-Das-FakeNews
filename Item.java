@@ -2,9 +2,9 @@ import java.util.*;
 
 public abstract class Item {
     
-    private int tipo;
-    private String nome;
-    private Posicao posicao;
+    protected int tipo;
+    protected String nome;
+    protected Posicao posicao;
 
     public Item(int tipo, String nome, Posicao posicao){
         this.setTipo(tipo);
@@ -37,6 +37,6 @@ public abstract class Item {
         this.tipo = tipo;
     }
 
-    public abstract void usar(Setor casa[][], ArrayList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos);
+    public abstract void usar(Setor casa[][], LinkedList<FakeNews> FakeNewsList, Jogador jogador, Posicao pos, Scanner scan);
 
 }

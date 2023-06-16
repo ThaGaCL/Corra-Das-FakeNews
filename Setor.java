@@ -21,7 +21,7 @@ public class Setor {
         return this.posicao;
     }
 
-    public boolean getRestrito(){
+    public boolean isRestrito(){
         return this.restrito;
     }
 
