@@ -191,7 +191,6 @@ public class Jogo {
         
         if(fakeNewsList.isEmpty() == true){
             String msgVitoria = "Os Jogadores eliminaram todas as FakeNews, Parabéns!";
-            terminal.limpaTerminal();
             terminal.vitoria(msgVitoria);
             System.exit(0);
         }
@@ -313,7 +312,6 @@ public class Jogo {
 
         if(jogadoresList.isEmpty() == true){
             String msgDerrota = "Todos os jogadores foram eliminados!";
-            terminal.limpaTerminal();
             terminal.derrota(msgDerrota);
             System.exit(0);
         }
@@ -324,151 +322,22 @@ public class Jogo {
             
             jogador = iterator.next();
 
+            terminal.limpaTerminal();
+            tabuleiro.desenhaTabuleiro(casa);
             move = this.desenhaCaixas(terminal, jogador);
             
             if(move == 1){
-                Posicao posAntiga, posNova;
-                int direcao;
-                
-                do{
-                    terminal.caixaMovimento();
-                    direcao = input.nextInt();
-                }while(direcao > 5);
-
-                // Movimentação comum do jogador
-                if(jogador.getItens().isEmpty() || jogador.getItens().getFirst().getTipo() != 4){
-                    posAntiga = jogador.getPosicao();
-                    jogador.movimentar(direcao);
-                    posNova = jogador.getPosicao();
-                }
-
-                // Movimentação em caso de Ouvir Boato
-                else{
-                    Item item = jogador.getItens().getFirst();
-                    OuvirBoatoItem oB = (OuvirBoatoItem) item;
-                    System.out.print("O movimento escolhido pelo Jogador " + jogador.getNome() + " não foi respeitado e foi aleatorizado!");
-                    posAntiga = jogador.getPosicao();
-                    oB.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
-                    posNova = jogador.getPosicao();
-                    jogador.removerItem(oB);
-                }
-                
-                //Caso jogador saia do tabuleiro
-                if((posNova.getX() > TAB_BORDA_MAX || posNova.getX() < TAB_BORDA_MIN) || (posNova.getY() > TAB_BORDA_MAX || posNova.getY() < TAB_BORDA_MIN)){
-                    casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
-                    iterator.remove();
-                    
-                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por se desviar de sua jornada!");
-                }
-
-                //Caso jogador entre em setor privado
-                else if (casa[posNova.getX()][posNova.getY()].isRestrito() != false){
-                    casa[posNova.getX()][posNova.getY()].setJogador(null);
-                    iterator.remove();
-                    
-                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por andar em setor privado!");
-                }
-
-                //Caso jogador colida com FakeNews
-                else if (casa[posNova.getX()][posNova.getY()].getFakeNews() != null) {
-                    casa[posNova.getX()][posNova.getY()].setJogador(null);
-                    iterator.remove();
-
-                    System.out.println("O jogador " + jogador.getNome() + " foi eliminado por confiar em FakeNews!");
-                }
-
-                //Caso jogador pegue um item
-                else if (casa[posNova.getX()][posNova.getY()].getItem() != null) {
-                    Item itemNome = casa[posNova.getX()][posNova.getY()].getItem();
-                    casa[posNova.getX()][posNova.getY()].setItem(null);
-                    itemList.remove(itemNome);
-                    
-                    casa[posNova.getX()][posNova.getY()].setJogador(jogador);
-                    
-                    jogador.adicionarItem(itemNome);
-                    if(itemNome.getTipo() == 4){
-                        System.out.println("Oh não! O jogador ouviu um boato, seu próximo movimento será aleatório!");
-                    }
-                    else
-                        System.out.println("O jogador recebeu o direito de " + itemNome.getNome());
-
-                    this.inicializaItem(casa, true); //Spawna novo item no tabuleiro
-                }
-                else{
-                    casa[posNova.getX()][posNova.getY()].setJogador(jogador);
-                }
-                casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
-
-                System.out.print("\n\n");
-                System.out.println(jogador.getNome() + ": " + "(" + posAntiga.getX() + ", " + posAntiga.getY() + ")" + " ---> " + "(" + posNova.getX() + ", " + posNova.getY() + ")");
+                this.movimentaJogador(casa, tabuleiro, jogador, terminal, iterator);
                 terminal.limpaTerminal();
                 tabuleiro.desenhaTabuleiro(casa);
             }
             else if (move == 2) {
-                int acao;
                 int quantDenun = 0;
                 int quantFugir = 0;
                 int quantLerReal = 0;
-                
-                //Contador
-                for (Item item : jogador.getItens()) {
-                    if (item.getTipo() == 1){
-                        quantDenun++;
-                    }
-                    else if (item.getTipo() == 2){
-                        quantFugir++;
-                    }
-                    else if (item.getTipo() == 3){
-                        quantLerReal++;
-                    }
-                }
-                
-                
-                boolean possuiItem = false; // Variável para verificar se o jogador possui um item válido
-                do{
-                    terminal.caixaAcao(quantDenun, quantFugir, quantLerReal);
-                    
-                    //Executa ação escolhida
-                    acao = input.nextInt();
-                    switch (acao) {
-                        case 1:
-                            for (Item item : jogador.getItens()) {
-                                    if (item instanceof DenunciarFakeNewsItem) {
-                                        DenunciarFakeNewsItem dFN = (DenunciarFakeNewsItem) item;
-                                        dFN.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
-                                        jogador.removerItem(dFN);
-                                        possuiItem = true; // O jogador possui um item válido
-                                    }
-                                }
-                            break;
-                        case 2:
-                            for (Item item : jogador.getItens()) {
-                                if (item instanceof FugirItem) {
-                                    FugirItem F = (FugirItem) item;
-                                    F.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
-                                    jogador.removerItem(F);
-                                    possuiItem = true; // O jogador possui um item válido
-                                }
-                            }
-                            break;
-                        case 3:
-                            for (Item item : jogador.getItens()) {
-                                    if (item instanceof LerNoticiaRealItem) {
-                                        LerNoticiaRealItem lNR = (LerNoticiaRealItem) item;
-                                        lNR.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
-                                        jogador.removerItem(lNR);
-                                        possuiItem = true; // O jogador possui um item válido
-                                    }
-                                }
-                            break;
-                        case 4:
-                            break;
-                        }  
-                        if(possuiItem == false)              
-                            System.out.println("Você não possui nenhum item desse tipo");
-                
-                }while(possuiItem == false); 
 
+                this.acaoJogador(casa, tabuleiro, jogador, quantDenun, quantFugir, quantLerReal, terminal);
+                terminal.limpaTerminal();
                 tabuleiro.desenhaTabuleiro(casa);
             }
         }
@@ -483,7 +352,148 @@ public class Jogo {
             
         return input.nextInt();
     }
+     
+    public void acaoJogador(Setor casa[][], Tabuleiro tabuleiro, Jogador jogador, int quantDenun, int quantFugir, int quantLerReal, InterfaceTerminal terminal){
 
+        int acao;
+        
+        //Contador
+        for (Item item : jogador.getItens()) {
+            if (item.getTipo() == 1){
+                quantDenun++;
+            }
+            else if (item.getTipo() == 2){
+                quantFugir++;
+            }
+            else if (item.getTipo() == 3){
+                quantLerReal++;
+            }
+        }
+
+        boolean possuiItem = false; // Variável para verificar se o jogador possui um item válido
+        do{
+            terminal.caixaAcao(quantDenun, quantFugir, quantLerReal);
+            
+            //Executa ação escolhida
+            acao = input.nextInt();
+            switch (acao) {
+                case 1:
+                    for (Item item : jogador.getItens()) {
+                            if (item instanceof DenunciarFakeNewsItem) {
+                                DenunciarFakeNewsItem dFN = (DenunciarFakeNewsItem) item;
+                                dFN.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
+                                jogador.removerItem(dFN);
+                                possuiItem = true; // O jogador possui um item válido
+                            }
+                        }
+                    break;
+                case 2:
+                    for (Item item : jogador.getItens()) {
+                        if (item instanceof FugirItem) {
+                            FugirItem F = (FugirItem) item;
+                            F.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
+                            jogador.removerItem(F);
+                            possuiItem = true; // O jogador possui um item válido
+                        }
+                    }
+                    break;
+                case 3:
+                    for (Item item : jogador.getItens()) {
+                            if (item instanceof LerNoticiaRealItem) {
+                                LerNoticiaRealItem lNR = (LerNoticiaRealItem) item;
+                                lNR.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
+                                jogador.removerItem(lNR);
+                                possuiItem = true; // O jogador possui um item válido
+                            }
+                        }
+                    break;
+                case 4:
+                    break;
+            }  
+            if(possuiItem == false)              
+                System.out.println("Você não possui nenhum item desse tipo");
+        
+        }while(possuiItem == false); 
+    }
+
+    public void movimentaJogador(Setor casa[][], Tabuleiro tabuleiro, Jogador jogador, InterfaceTerminal terminal, Iterator<Jogador> iterator){
+        Posicao posAntiga, posNova;
+        int direcao;
+
+        
+        do{
+            terminal.caixaMovimento();
+            direcao = input.nextInt();
+        }while(direcao > 5);
+
+        // Movimentação comum do jogador
+        if(jogador.getItens().isEmpty() || jogador.getItens().getFirst().getTipo() != 4){
+            posAntiga = jogador.getPosicao();
+            jogador.movimentar(direcao);
+            posNova = jogador.getPosicao();
+        }
+
+        // Movimentação em caso de Ouvir Boato
+        else{
+            Item item = jogador.getItens().getFirst();
+            OuvirBoatoItem oB = (OuvirBoatoItem) item;
+            System.out.print("O movimento escolhido pelo Jogador " + jogador.getNome() + " não foi respeitado e foi aleatorizado!");
+            posAntiga = jogador.getPosicao();
+            oB.usar(casa, fakeNewsList, jogador, jogador.getPosicao(), input);
+            posNova = jogador.getPosicao();
+            jogador.removerItem(oB);
+        }
+        
+        //Caso jogador saia do tabuleiro
+        if((posNova.getX() > TAB_BORDA_MAX || posNova.getX() < TAB_BORDA_MIN) || (posNova.getY() > TAB_BORDA_MAX || posNova.getY() < TAB_BORDA_MIN)){
+            casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
+            iterator.remove();
+            
+            System.out.println("O jogador " + jogador.getNome() + " foi eliminado por se desviar de sua jornada!");
+        }
+
+        //Caso jogador entre em setor privado
+        else if (casa[posNova.getX()][posNova.getY()].isRestrito() != false){
+            casa[posNova.getX()][posNova.getY()].setJogador(null);
+            iterator.remove();
+            
+            System.out.println("O jogador " + jogador.getNome() + " foi eliminado por andar em setor privado!");
+        }
+
+        //Caso jogador colida com FakeNews
+        else if (casa[posNova.getX()][posNova.getY()].getFakeNews() != null) {
+            casa[posNova.getX()][posNova.getY()].setJogador(null);
+            iterator.remove();
+
+            System.out.println("O jogador " + jogador.getNome() + " foi eliminado por confiar em FakeNews!");
+        }
+
+        //Caso jogador pegue um item
+        else if (casa[posNova.getX()][posNova.getY()].getItem() != null) {
+            Item itemNome = casa[posNova.getX()][posNova.getY()].getItem();
+            casa[posNova.getX()][posNova.getY()].setItem(null);
+            itemList.remove(itemNome);
+            
+            casa[posNova.getX()][posNova.getY()].setJogador(jogador);
+            
+            jogador.adicionarItem(itemNome);
+            if(itemNome.getTipo() == 4){
+                System.out.println("Oh não! O jogador ouviu um boato, seu próximo movimento será aleatório!");
+            }
+            else
+                System.out.println("O jogador recebeu o direito de " + itemNome.getNome());
+
+            this.inicializaItem(casa, true); //Spawna novo item no tabuleiro
+        }
+        else{
+            casa[posNova.getX()][posNova.getY()].setJogador(jogador);
+        }
+        casa[posAntiga.getX()][posAntiga.getY()].setJogador(null);
+
+        System.out.print("\n\n");
+        System.out.println(jogador.getNome() + ": " + "(" + posAntiga.getX() + ", " + posAntiga.getY() + ")" + " ---> " + "(" + posNova.getX() + ", " + posNova.getY() + ")");
+    }
+    
     
     public void encerrarLeitura(){
         input.close();
